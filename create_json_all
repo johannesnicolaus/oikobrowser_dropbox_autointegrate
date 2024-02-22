@@ -1,0 +1,14 @@
+#!/bin/sh
+
+cd ~/jbrowse2
+
+# generate json files
+create_json.py -o ~/temp -a $0 -i $1
+
+# Iterate over each .json file in the directory
+for file in ~/temp/*.json; do
+  # Execute the jbrowse command for each file
+  jbrowse add-track-json "$file" -u
+done
+
+rm -r ~/temp
