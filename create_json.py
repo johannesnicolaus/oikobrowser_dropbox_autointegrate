@@ -53,6 +53,8 @@ def determine_track_type(file_name):
         return "BedAdapter"
     elif file_name.lower().endswith(".gff3"):
         return "Gff3Adapter"
+    elif file_name.lower().endswith(".gff"):
+        return "Gff3Adapter"
     elif file_name.lower().endswith(".gtf"):
         return "GtfAdapter"
     else:
