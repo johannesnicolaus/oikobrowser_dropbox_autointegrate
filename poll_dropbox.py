@@ -25,17 +25,19 @@ def refresh_access_token(client_id, client_secret, refresh_token):
     return response.json()  # Contains the new access token
 
 # Main function to poll Dropbox for changes
-def poll_dropbox_changes(secret_name, region_name, folder_path, bash_script_path):
+def poll_dropbox_changes(secret_name, region_name, folder_path, bash_script_path, target_jbrowse):
+    # Retrieve the initial Dropbox credentials and access token
     secrets = get_secret(secret_name, region_name)
     access_token = refresh_access_token(secrets['client_id'], secrets['client_secret'], secrets['refresh_token'])['access_token']
     
+    # Initialize the Dropbox client with the access token
     dbx = dropbox.Dropbox(access_token)
     response = dbx.files_list_folder(folder_path, recursive=True)
     cursor = response.cursor
     change_detected_time = None
 
     while True:
-        # Refresh the access token every hour
+        # Refresh the access token every hour to ensure the script continues to have access
         current_time = time.time()
         if not 'last_refresh_time' in globals() or current_time - last_refresh_time >= 3600:
             access_token = refresh_access_token(secrets['client_id'], secrets['client_secret'], secrets['refresh_token'])['access_token']
@@ -43,21 +45,22 @@ def poll_dropbox_changes(secret_name, region_name, folder_path, bash_script_path
             globals()['last_refresh_time'] = current_time
         
         try:
+            # Check for any changes in the Dropbox folder
             response = dbx.files_list_folder_continue(cursor)
-            if response.entries:  # If there are changes
+            if response.entries:  # If there are changes detected
                 print("Changes detected.")
                 change_detected_time = time.time()
             cursor = response.cursor
         except dropbox.exceptions.ApiError as err:
-            # Handle expiration or other API errors
+            # Handle any API errors, such as token expiration
             print("API error:", err)
             time.sleep(60)  # Wait a minute before trying again
             continue
 
-        # Check if 2 minutes have passed since the last detected change
+        # Execute the bash script if 2 minutes have passed since the last detected change
         if change_detected_time and (time.time() - change_detected_time >= 120):
             print("2 minutes passed since last change, executing bash script...")
-            subprocess.call(['bash', bash_script_path])
+            subprocess.call(['bash', bash_script_path, target_jbrowse])
             change_detected_time = None  # Reset the timer
         
         time.sleep(10)  # Check for changes every 10 seconds
@@ -68,6 +71,7 @@ if __name__ == "__main__":
     parser.add_argument('--region_name', required=True, help='The AWS region of the secret.')
     parser.add_argument('--folder_path', required=True, help='The Dropbox folder path to monitor for changes.')
     parser.add_argument('--bash_script_path', required=True, help='The path to the bash script to execute on change.')
+    parser.add_argument('--target_jbrowse', required=True, help='The target JBrowse directory to use in the bash script.')
     args = parser.parse_args()
 
-    poll_dropbox_changes(args.secret_name, args.region_name, args.folder_path, args.bash_script_path)
+    poll_dropbox_changes(args.secret_name, args.region_name, args.folder_path, args.bash_script_path, args.target_jbrowse)
