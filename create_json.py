@@ -116,8 +116,12 @@ for file in files:
     if config:
         # Construct the file path
         file_path = os.path.join(args.output_dir, f"{trackID}.json")
+
+        # Print message indicating that a JSON file is being generated
+        print(f"Generating JSON for file: {file.name}")
+
         # Write the JSON configuration to the file
         with open(file_path, 'w') as json_file:
             json.dump(config, json_file, indent=2)
 
-print("finished")
+print("finished writing json files")
