@@ -88,14 +88,17 @@ def generate_jbrowse_json_config(file_entry, direct_link):
                     "locationType": "UriLocation",
                     "uri": direct_link
                 }
-            elif trackType in ["Gff3Adapter", "BedAdapter"]:
+            elif trackType in ["Gff3Adapter", "BedAdapter", "GtfAdapter"]:
                 config["type"] = "FeatureTrack"
-                locationKey = "gffLocation" if trackType == "Gff3Adapter" else "bedLocation"
+                locationKey = "gtfLocation" if trackType == "GtfAdapter" else "bedLocation" if trackType == "BedAdapter" else "gffLocation"
                 config["adapter"][locationKey] = {
                     "locationType": "UriLocation",
                     "uri": direct_link
                 }
-            
+                # Add transcriptType for Gff3Adapter
+                if trackType in ["Gff3Adapter", "GtfAdapter"]:
+                    config["adapter"]["transcriptType"] = "transcript"
+                    
             return trackID, config
     return None, None
 
