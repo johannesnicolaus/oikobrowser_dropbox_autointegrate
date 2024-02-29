@@ -1,7 +1,15 @@
 #!/bin/sh
 
-# get the jbrowse2 directory from argument
-cd $0
+# Correct way to get the script's directory is using $1, which is the first argument
+target_jbrowse=$1
+folder_path=$2
+access_token=$3
+
+# Capture the current working directory
+original_cwd=$(pwd)
+
+# Navigate to the jbrowse2 directory
+cd "$target_jbrowse" || exit
 
 # add assembly manually
 jbrowse add-assembly "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/Bar2_p4/Bar2_p4.fa" -a "Bar2_p4" -n "Bar2_p4" -t indexedFasta \
@@ -16,12 +24,9 @@ jbrowse add-assembly "https://raw.githubusercontent.com/oist//Oikopleuradioica_g
 jbrowse add-assembly "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/OdB3/Oidioi_genome.fasta" -a "OdB3" -n "OdB3" -t indexedFasta \
     --faiLocation "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/OdB3/Oidioi_genome.fasta.fai" --displayName "Oikopleura dioica Norway (OdB3)"
 
-# get access token using AWS Secrets Manager
-# Example: --secret_name oikobrowser_pull_token --region_name ap-southeast-2
-ACCESS_TOKEN=$(python get_access_token.py --secret_name "YOUR_SECRET_NAME" --region_name "YOUR_REGION_NAME")
-
 # generate json files
-create_json.py -o ~/temp -a $0 -i $1
+python "$original_cwd/create_json.py" -o ~/temp --input_dir "$folder_path" --access_token "$access_token"
+
 
 # Iterate over each .json file in the directory
 for file in ~/temp/*.json; do
