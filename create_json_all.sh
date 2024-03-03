@@ -25,16 +25,14 @@ jbrowse add-assembly "https://raw.githubusercontent.com/oist//Oikopleuradioica_g
     --faiLocation "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/OdB3/Oidioi_genome.fasta.fai" --displayName "Oikopleura dioica Norway (OdB3)"
 
 # generate json files
-python "$original_cwd/create_json.py" -o ~/temp --input_dir "$folder_path" --access_token "$access_token"
+python "$original_cwd/create_json.py" -o "$target_jbrowse/individual_json" --input_dir "$folder_path" --access_token "$access_token" --target_jbrowse "$target_jbrowse"
 
 
 # Iterate over each .json file in the directory
-for file in ~/temp/*.json; do
+for file in $target_jbrowse/individual_json/*.json; do
   # Execute the jbrowse command for each file
   jbrowse add-track-json "$file" -u
 done
 
-rm -r ~/temp
-
 # index text everytime this script is run
-jbrowse text-index --attributes="Name,ID,gene_name" --force
+# jbrowse text-index --attributes="Name,ID,gene_name" --force

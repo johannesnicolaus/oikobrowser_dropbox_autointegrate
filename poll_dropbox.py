@@ -61,12 +61,12 @@ def poll_dropbox_changes(secret_name, region_name, folder_path, bash_script_path
             continue
 
         # Execute the bash script if 2 minutes have passed since the last detected change
-        if change_detected_time and (time.time() - change_detected_time >= 120):
+        if change_detected_time and (time.time() - change_detected_time >= 10):
             print("2 minutes passed since last change, executing bash script...")
             subprocess.call(['bash', bash_script_path, target_jbrowse, args.folder_path, access_token])
             change_detected_time = None  # Reset the timer
         
-        time.sleep(300)  # Check for changes every 5 mins
+        time.sleep(10)  # Check for changes every 5 mins
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Monitor Dropbox folder for changes and execute a bash script on change.')
