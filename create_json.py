@@ -59,6 +59,8 @@ def determine_track_type(file_name):
         return "Gff3Adapter"
     elif file_name.lower().endswith(".gtf"):
         return "GtfAdapter"
+    elif file_name.lower().endswith(".chain"):
+        return "ChainAdapter"
     else:
         return None
 
@@ -68,6 +70,7 @@ def generate_jbrowse_json_config(file_entry, direct_link):
         assemblyNames = parts[-3]
         category_path = parts[-2]
         file_name = parts[-1]
+        file_name_without_extension, extension = os.path.splitext(file_name)
         trackType = determine_track_type(file_name)
         
         if trackType:
@@ -100,7 +103,36 @@ def generate_jbrowse_json_config(file_entry, direct_link):
                 # Add transcriptType for Gff3Adapter
                 if trackType in ["Gff3Adapter", "GtfAdapter"]:
                     config["adapter"]["transcriptType"] = "transcript"
-                    
+            elif trackType == "ChainAdapter":
+                query_assembly = file_name_without_extension  # For .chain files, the query assembly is derived from the file name
+                # Assume the target assembly needs to be determined or set here. For demonstration, using 'assemblyNames' as placeholder
+                target_assembly = assemblyNames  # This might need adjustment based on how you determine the target assembly
+                
+                # Unique trackID for .chain files, consider including more unique attributes if necessary
+                trackID = f"{query_assembly}_{target_assembly}"
+
+                # Constructing the configuration for a chain file
+                config = {
+                    "type": "SyntenyTrack",
+                    "trackId": trackID,
+                    "name": file_name,  # or adjust as needed
+                    "assemblyNames": [target_assembly, query_assembly],  # The order depends on your specific requirement
+                    "adapter": {
+                        "type": "ChainAdapter",
+                        "targetAssembly": target_assembly,
+                        "queryAssembly": query_assembly,
+                        "chainLocation": {
+                            "locationType": "UriLocation",
+                            "uri": direct_link  # Direct link to the chain file
+                        }
+                    },
+                    "displays": [
+                        {"type": "DotplotDisplay", "displayId": f"{trackID}-DotplotDisplay"},
+                        {"type": "LinearComparativeDisplay", "displayId": f"{trackID}-LinearComparativeDisplay"},
+                        {"type": "LinearSyntenyDisplay", "displayId": f"{trackID}-LinearSyntenyDisplay"},
+                        {"type": "LGVSyntenyDisplay", "displayId": f"{trackID}-LGVSyntenyDisplay"}
+                    ]
+                }   
             return trackID, config
     return None, None
 
