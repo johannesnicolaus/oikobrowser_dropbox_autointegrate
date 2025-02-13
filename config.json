@@ -1,0 +1,99 @@
+{
+  "assemblies": [
+    {
+      "name": "Bar2_p4",
+      "sequence": {
+        "type": "ReferenceSequenceTrack",
+        "trackId": "Bar2_p4-ReferenceSequenceTrack",
+        "adapter": {
+          "type": "IndexedFastaAdapter",
+          "fastaLocation": {
+            "uri": "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/Bar2_p4/Bar2_p4.fa",
+            "locationType": "UriLocation"
+          },
+          "faiLocation": {
+            "uri": "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/Bar2_p4/Bar2_p4.fa.fai",
+            "locationType": "UriLocation"
+          }
+        }
+      },
+      "aliases": [
+        "Bar2_p4"
+      ],
+      "displayName": "Oikopleura dioica Barcelona (Bar2_p4)"
+    },
+    {
+      "name": "OKI.I69",
+      "sequence": {
+        "type": "ReferenceSequenceTrack",
+        "trackId": "OKI.I69-ReferenceSequenceTrack",
+        "adapter": {
+          "type": "IndexedFastaAdapter",
+          "fastaLocation": {
+            "uri": "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/OKI.I69/OKI.I69.fa",
+            "locationType": "UriLocation"
+          },
+          "faiLocation": {
+            "uri": "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/OKI.I69/OKI.I69.fa.fai",
+            "locationType": "UriLocation"
+          }
+        }
+      },
+      "aliases": [
+        "OKI.I69"
+      ],
+      "displayName": "Oikopleura dioica Okinawa (OKI2018_I69)"
+    },
+    {
+      "name": "OSKA2016v1.9",
+      "sequence": {
+        "type": "ReferenceSequenceTrack",
+        "trackId": "OSKA2016v1.9-ReferenceSequenceTrack",
+        "adapter": {
+          "type": "IndexedFastaAdapter",
+          "fastaLocation": {
+            "uri": "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/OSKA2016v1.9/OSKA2016v1.9.fa",
+            "locationType": "UriLocation"
+          },
+          "faiLocation": {
+            "uri": "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/OSKA2016v1.9/OSKA2016v1.9.fa.fai",
+            "locationType": "UriLocation"
+          }
+        }
+      },
+      "aliases": [
+        "OSKA2016v1.9"
+      ],
+      "displayName": "Oikopleura dioica Osaka (OSKA2016v1.9)"
+    },
+    {
+      "name": "OdB3",
+      "sequence": {
+        "type": "ReferenceSequenceTrack",
+        "trackId": "OdB3-ReferenceSequenceTrack",
+        "adapter": {
+          "type": "IndexedFastaAdapter",
+          "fastaLocation": {
+            "uri": "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/OdB3/Oidioi_genome.fasta",
+            "locationType": "UriLocation"
+          },
+          "faiLocation": {
+            "uri": "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/OdB3/Oidioi_genome.fasta.fai",
+            "locationType": "UriLocation"
+          }
+        }
+      },
+      "aliases": [
+        "OdB3"
+      ],
+      "displayName": "Oikopleura dioica Norway (OdB3)"
+    }
+  ],
+  "configuration": {},
+  "connections": [],
+  "defaultSession": {
+    "name": "New Session"
+  },
+  "tracks": [],
+  "aggregateTextSearchAdapters": []
+}

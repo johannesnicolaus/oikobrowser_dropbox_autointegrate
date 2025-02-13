@@ -117,6 +117,7 @@ def generate_jbrowse_json_config(file_entry, direct_link):
                     "trackId": trackID,
                     "name": file_name,  # or adjust as needed
                     "assemblyNames": [target_assembly, query_assembly],  # The order depends on your specific requirement
+                    "category": categories,
                     "adapter": {
                         "type": "ChainAdapter",
                         "targetAssembly": target_assembly,

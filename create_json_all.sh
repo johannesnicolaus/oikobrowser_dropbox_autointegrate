@@ -24,6 +24,12 @@ jbrowse add-assembly "https://raw.githubusercontent.com/oist//Oikopleuradioica_g
 jbrowse add-assembly "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/OdB3/Oidioi_genome.fasta" -a "OdB3" -n "OdB3" -t indexedFasta \
     --faiLocation "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/OdB3/Oidioi_genome.fasta.fai" --displayName "Oikopleura dioica Norway (OdB3)"
 
+jbrowse add-assembly "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/O10v1/O10_primary_assembly.fa" -a "O10" -n "O10" -t indexedFasta \
+    --faiLocation "https://raw.githubusercontent.com/oist//Oikopleuradioica_genomeannotation/main/O10v1/O10_primary_assembly.fa.fai" --displayName "Oikopleura dioica Osaka (O10)"
+
+
+
+
 # generate json files
 python "$original_cwd/create_json.py" -o "$target_jbrowse/individual_json" --input_dir "$folder_path" --access_token "$access_token" --target_jbrowse "$target_jbrowse"
 
@@ -35,4 +41,4 @@ for file in $target_jbrowse/individual_json/*.json; do
 done
 
 # index text everytime this script is run
-# jbrowse text-index --attributes="Name,ID,gene_name" --force
+jbrowse text-index --attributes="Name,ID,gene_name" --force
