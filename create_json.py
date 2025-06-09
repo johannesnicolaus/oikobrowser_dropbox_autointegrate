@@ -61,6 +61,8 @@ def determine_track_type(file_name):
         return "GtfAdapter"
     elif file_name.lower().endswith(".chain"):
         return "ChainAdapter"
+    elif file_name.lower().endswith(".bedgraph"):
+        return "BedGraphAdapter"
     else:
         return None
 
@@ -103,6 +105,24 @@ def generate_jbrowse_json_config(file_entry, direct_link):
                 # Add transcriptType for Gff3Adapter
                 if trackType in ["Gff3Adapter", "GtfAdapter"]:
                     config["adapter"]["transcriptType"] = "transcript"
+            elif trackType in ["BedGraphAdapter", "BedGraphTabixAdapter"]:
+                config["type"] = "QuantitativeTrack"
+                adapter = config["adapter"]
+                if trackType == "BedGraphAdapter":
+                    adapter["bedGraphLocation"] = {
+                        "uri": direct_link,
+                        "locationType": "UriLocation",
+                    }
+                else:  # BedGraphTabixAdapter
+                    adapter["bedGraphGzLocation"] = {
+                        "uri": direct_link,
+                        "locationType": "UriLocation",
+                    }
+                    # add index file link (.tbi or .gz.tbi)
+                    tbi_link = direct_link + ".tbi"
+                    adapter["index"] = {
+                        "location": {"uri": tbi_link, "locationType": "UriLocation"}
+                    }
             elif trackType == "ChainAdapter":
                 query_assembly = file_name_without_extension  # For .chain files, the query assembly is derived from the file name
                 # Assume the target assembly needs to be determined or set here. For demonstration, using 'assemblyNames' as placeholder
